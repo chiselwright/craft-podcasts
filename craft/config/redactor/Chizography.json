@@ -1,0 +1,15 @@
+{
+    "buttons": ["format","bold","italic","lists","link","file","horizontalrule"]
+ ,  "formatting": ["p", "blockquote", "pre", "h1", "h2", "h3", "h4", "h5"]
+ ,  "plugins": ["source","fullscreen","pagebreak"]
+
+ ,  "air": false
+ ,  "minHeight": 300
+ ,  "tabKey": false
+ ,  "linkTooltip": true
+ ,  "pastePlainText": true
+ ,  "pasteImages": false
+ ,  "script": false
+
+ ,  "placeholder": "Enter your wordsmithery..."
+}

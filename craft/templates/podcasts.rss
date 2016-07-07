@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:cc="http://web.resource.org/cc/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    {# Get URL params -#}
+    {% set podcastParam = craft.request.getParam('podcast') -%}
+
+    {# Default query -#}
+    {% set query = craft.entries -%}
+    {# Refine the query -#}
+    {% set query = not podcastParam ? query : query.type(podcastParam) -%}
+
+    {# Default RSS href -#}
+    {% set rssQueryString = craft.request.queryStringWithoutPath
+                        ? '?' ~ craft.request.queryStringWithoutPath -%}
+    {% set rssHref = craft.request.url ~ rssQueryString -%}
+
+    {# get podcast details from global settings #}
+    {% set podcastDetails = not podcastParam
+           ? {
+             }
+           : craft.globals.getSetByHandle('boardtalkGlobalValues')
+    %}
+    <channel>
+        <atom:link href="{{rssHref}}" rel="self" type="application/rss+xml"/>
+        <title>{{ podcastDetails.podcastName }}</title>
+        <pubDate>{{ now.rss }}</pubDate>
+        <lastBuildDate>{{ now.rss }}</lastBuildDate>
+        <generator><![CDATA[Blood, Sweat & Tears]]></generator>
+        <link>{{ siteUrl }}</link>
+        <language>en</language>
+        <copyright><![CDATA[{{siteName}}]]></copyright>
+        <!--<docs>http://www.boardgamersanonymous.com</docs>-->
+        <managingEditor><![CDATA[{{ podcastDetails.podcastManagingEditor }}]]></managingEditor>
+        <itunes:summary><![CDATA[{{ podcastDetails.podcastSummary }}]]></itunes:summary>
+        <image>
+            <url>{{ podcastDetails.podcastImageUrl1400x1400 }}</url>
+            <title>{{ podcastDetails.podcastName }}</title>
+            <link><![CDATA[{{ podcastDetails.podcastName }}]]></link>
+        </image>
+        <itunes:author>{{podcastDetails.podcastName}}</itunes:author>
+        <itunes:keywords>board,gamers,games,gaming,geek,nerds,tabletop</itunes:keywords>
+    <itunes:category text="Games &amp; Hobbies"/>
+    <itunes:category text="Games &amp; Hobbies">
+        <itunes:category text="Hobbies"/>
+    </itunes:category>
+    <itunes:category text="Games &amp; Hobbies">
+        <itunes:category text="Other Games"/>
+    </itunes:category>
+        <itunes:image href="{{ podcastDetails.podcastImageUrl1400x1400 }}" />
+        <itunes:explicit>clean</itunes:explicit>
+        <itunes:owner>
+            <itunes:name><![CDATA[{{podcastDetails.podcastName}}]]></itunes:name>
+            <itunes:email>{{podcastDetails.podcastEmail}}</itunes:email>
+        </itunes:owner>
+        <description><![CDATA[{{ podcastDetails.podcastDescription ? podcastDetails.podcastDescription : podcastDetails.podcastSummary }}]]></description>
+        <itunes:subtitle><![CDATA[{{ podcastDetails.podcastSummary }}]]></itunes:subtitle>
+        {% for podcast in query.find() %}<item>
+            <title>{{podcast.episodeTitle}}</title>
+            <pubDate>{{ podcast.postDate.rss }}</pubDate>
+            <guid isPermaLink="false"><![CDATA[{{podcast.url}}]]></guid>
+            <link><![CDATA[{{podcast.url}}]]></link>
+            <enclosure length="{{podcast.episodeFileSizeBytes}}" type="{{podcast.episodeMimeType}}" url="{{podcast.episodeMp3Url}}" />
+            <itunes:image href="{{podcast.episodeThumbnail}}" />
+            <itunes:duration>{{podcast.episodeDurationHHMMSS}}</itunes:duration>
+            <itunes:explicit>clean</itunes:explicit>
+            <itunes:keywords />
+            <itunes:subtitle><![CDATA[{{podcast.episodeDescription}}]]></itunes:subtitle>
+            <description><![CDATA[{{podcast.episodeDescription}}]]></description>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

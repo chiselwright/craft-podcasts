@@ -1,0 +1,58 @@
+{#
+ # BoardTalk index template
+ # -------------------
+ #
+ # This template is loaded whenever http://example.com/boardtalk is
+ # requested, because it is located at boardtalk/index.html in your
+ # craft/templates/ folder.
+ #
+ # See this page for more details on how Craft routes requests:
+ # http://craftcms.com/docs/routing
+ #}
+
+{% extends "_chizography" %}
+{% set title = "BoardTalk" %}
+
+{% block content %}
+<style>
+[class*="col-"] {
+    margin-top: 10px;
+}
+</style>
+        <div class="row">
+          <div class="col-md-3">
+              <div class="pull-left">
+                <img style="padding:15px" src="https://s3-eu-west-1.amazonaws.com/net.chizography.podcast.boardtalk/BoardTalk-600x600.png" width="200" height="200" />
+              </div>
+          </div>
+          <div class="col-md-6">
+              <h2 class="text-left">{{ title }}</h2>
+              <small>Cupim fugiat pork elit, est pork loin id tongue et duis. Sirloin swine kielbasa ea in, in pancetta tongue irure nulla sunt ipsum meatball culpa. Magna flank ex pastrami in, hamburger ground round capicola shankle pork belly minim proident in irure. Bacon pork belly dolore minim prosciutto ullamco cupim sirloin shank adipisicing beef ribs salami aliqua exercitation mollit. Lorem esse eu salami ea enim deserunt, landjaeger biltong. Cillum exercitation venison pork pariatur frankfurter ea, ad spare ribs consequat.</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <h3>Episodes</h3>
+        </div>
+
+        {% for podcast in craft.entries.type('boardtalk').order('postDate desc') %}
+        <div class="row">
+        <article>
+        <div class="col-lg-4 col-lg-push-8">
+          <div class="pull-right">
+            <img src="{{ podcast.episodeThumbnail }}" width="200" height="200" />
+          </div>
+        </div>
+        <div class="col-lg-8 col-lg-pull-4">
+          <h4>{{ podcast.episodeTitle }}</h4>
+          <p>{{ podcast.episodeDescription.getPage(1) }}</p>
+        </div>
+        </article>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            {% include 'boardtalk/html5podcastPlayer.html' with { 'podcast': podcast} %}
+          </div>
+        </div>
+        {% endfor %}
+{% endblock %}

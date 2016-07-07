@@ -1,0 +1,68 @@
+{#
+ # Layout template
+ # ---------------
+ #
+ # This template defines your site’s global layout. It can be
+ # “extended” by other templates to fill in the gaps.
+ #
+ # See Twig’s Template Inheritance documentation for more details:
+ # http://twig.sensiolabs.org/doc/templates.html#template-inheritance
+ #}
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+<head>
+        <meta charset="utf-8" />
+        <title>{% if title is defined %}{{ title }} - {% endif %}{{ siteName }}</title>
+        <link rel="home" href="{{ siteUrl }}" />
+
+        <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="{{ siteUrl }}" class="navbar-brand">{{ siteName }}</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="podcasts">Podcasts <span class="caret"></span></a>
+              <ul class="dropdown-menu" aria-labelledby="podcasts">
+                <li><a href="/boardtalk">BoardTalk</a></li>
+              </ul>
+            </li>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-header" id="banner">
+</div>
+    <div class="container">
+{% block content %}
+<p>If you see me, you haven’t set your <code>{% verbatim %}{% block content %}…{% endblock %}{% endverbatim %}</code> yet.</p>
+<p>See Twig’s <a href="http://twig.sensiolabs.org/doc/templates.html#template-inheritance">Template Inheritance</a> documentation for an explanation.</p>
+{% endblock %}
+        <div class="row">
+                <footer id="footer">
+                        Copyright {{ now.year }} {{ 'Chisel Wright' | ucfirst }}. All rights reserved  •  Built with <a href="http://craftcms.com">Craft</a>
+                </footer>
+        </div>
+    </div>
+</body>
+</html>
