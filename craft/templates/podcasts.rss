@@ -4,7 +4,7 @@
     {% set podcastParam = craft.request.getParam('podcast') -%}
 
     {# Default query -#}
-    {% set query = craft.entries -%}
+    {% set query = craft.entries.order('postDate desc') -%}
     {# Refine the query -#}
     {% set query = not podcastParam ? query : query.type(podcastParam) -%}
 
@@ -19,16 +19,19 @@
              }
            : craft.globals.getSetByHandle('boardtalkGlobalValues')
     %}
+
+    {# if possible, use most recent podcast as lastBuildDate and pubDate
+       but fall back to 'now' #}
+    {% set mostRecentEpisodeDate = query.first() ? query.first().postDate.rss : now.rss %}
     <channel>
         <atom:link href="{{rssHref}}" rel="self" type="application/rss+xml"/>
         <title>{{ podcastDetails.podcastName }}</title>
-        <pubDate>{{ now.rss }}</pubDate>
-        <lastBuildDate>{{ now.rss }}</lastBuildDate>
+        <pubDate>{{ mostRecentEpisodeDate }}</pubDate>
+        <lastBuildDate>{{ mostRecentEpisodeDate }}</lastBuildDate>
         <generator><![CDATA[Blood, Sweat & Tears]]></generator>
         <link>{{ siteUrl }}</link>
         <language>en</language>
         <copyright><![CDATA[{{siteName}}]]></copyright>
-        <!--<docs>http://www.boardgamersanonymous.com</docs>-->
         <managingEditor><![CDATA[{{ podcastDetails.podcastManagingEditor }}]]></managingEditor>
         <itunes:summary><![CDATA[{{ podcastDetails.podcastSummary }}]]></itunes:summary>
         <image>
