@@ -17,7 +17,7 @@
     {% set podcastDetails = not podcastParam
            ? {
              }
-           : craft.globals.getSetByHandle('boardtalkGlobalValues')
+           : craft.globals.getSetByHandle(podcastParam ~ 'GlobalValues')
     %}
 
     {# if possible, use most recent podcast as lastBuildDate and pubDate
@@ -62,7 +62,7 @@
             <guid isPermaLink="false"><![CDATA[{{podcast.url}}]]></guid>
             <link><![CDATA[{{podcast.url}}]]></link>
             <enclosure length="{{podcast.episodeFileSizeBytes}}" type="{{podcast.episodeMimeType}}" url="{{podcast.episodeMp3Url}}" />
-            <itunes:image href="{{podcast.episodeThumbnail}}" />
+            <itunes:image href="{{podcast.episodeImage250x250}}" />
             <itunes:duration>{{podcast.episodeDurationHHMMSS}}</itunes:duration>
             <itunes:explicit>clean</itunes:explicit>
             <itunes:keywords />
