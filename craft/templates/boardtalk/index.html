@@ -58,4 +58,9 @@
           </div>
         </div>
         {% endfor %}
+
+
+{% if podcastMeta.podcastItunesUrl %}
+<a href="{{podcastMeta.podcastItunesUrl}}?mt=2" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_itunes-lrg.svg) no-repeat;width:165px;height:40px;"></a>
+{% endif %}
 {% endblock %}
