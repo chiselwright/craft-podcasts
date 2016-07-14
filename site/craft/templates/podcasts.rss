@@ -13,6 +13,9 @@
                         ? '?' ~ craft.request.queryStringWithoutPath -%}
     {% set rssHref = craft.request.url ~ rssQueryString -%}
 
+    {# let's use feedburner! #}
+    {% set rssHref = "http://feeds.feedburner.com/" ~ podcastParam -%}
+
     {# get podcast details from global settings #}
     {% set podcastDetails = not podcastParam
            ? {
