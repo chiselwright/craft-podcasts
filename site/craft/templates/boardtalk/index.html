@@ -61,7 +61,15 @@
         {% endfor %}
 
 
-{% if podcastMeta.podcastItunesUrl %}
-<a href="{{podcastMeta.podcastItunesUrl}}?mt=2" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_itunes-lrg.svg) no-repeat;width:165px;height:40px;"></a>
-{% endif %}
+        <div class="row">
+          <div class="col-md-4 col-md-offset-8">
+	    {% if podcastMeta.podcastItunesUrl %}
+	    <a href="{{podcastMeta.podcastItunesUrl}}?mt=2" style="display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/images/badges/en-us/badge_itunes-lrg.svg) no-repeat;width:165px;height:43px;"></a>
+	    {% endif %}
+
+	    {% if urlFirstSegment %}
+	    <a href="{{ url("podcasts.rss", { podcast: urlFirstSegment }) }}"  style="display:inline-block;overflow:hidden;background:url({{url("rss-button-141x42.png")}}) no-repeat;width:141px;height:42px;"></a>
+	    {% endif %}
+	  </div>
+	</div>
 {% endblock %}
