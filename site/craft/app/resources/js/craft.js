@@ -10078,7 +10078,7 @@ Craft.ElementEditor = Garnish.Base.extend(
 
 			if (response.locales)
 			{
-				var $header = $('<div class="hud-header"/>'),
+				var $header = $('<div class="header"/>'),
 					$localeSelectContainer = $('<div class="select"/>').appendTo($header);
 
 				this.$localeSelect = $('<select/>').appendTo($localeSelectContainer);
@@ -10102,7 +10102,7 @@ Craft.ElementEditor = Garnish.Base.extend(
 
 			this.onCreateForm(this.$form);
 
-			var $footer = $('<div class="hud-footer"/>').appendTo(this.$form),
+			var $footer = $('<div class="footer"/>').appendTo(this.$form),
 				$buttonsContainer = $('<div class="buttons right"/>').appendTo($footer);
 			this.$cancelBtn = $('<div class="btn">'+Craft.t('Cancel')+'</div>').appendTo($buttonsContainer);
 			this.$saveBtn = $('<input class="btn submit" type="submit" value="'+Craft.t('Save')+'"/>').appendTo($buttonsContainer);
@@ -11846,7 +11846,7 @@ Craft.Grid = Garnish.Base.extend(
 
 	_refreshingCols: false,
 	_refreshColsAfterRefresh: false,
-	_forceRefreshColsAfterRefresh: false,
+	_setItems: null,
 
 	init: function(container, settings)
 	{
@@ -11926,9 +11926,6 @@ Craft.Grid = Garnish.Base.extend(
 	{
 		if (this._refreshingCols) {
 			this._refreshColsAfterRefresh = true;
-			if (force) {
-				this._forceRefreshColsAfterRefresh = true;
-			}
 			return;
 		}
 
@@ -11936,7 +11933,6 @@ Craft.Grid = Garnish.Base.extend(
 
 		if (!this.items.length)
 		{
-			this.completeRefreshCols();
 			return;
 		}
 
@@ -11950,7 +11946,7 @@ Craft.Grid = Garnish.Base.extend(
 
 		if (this.refreshCols._.scrollHeight == 0)
 		{
-			this.completeRefreshCols();
+			delete this.refreshCols._;
 			return;
 		}
 
@@ -11976,7 +11972,7 @@ Craft.Grid = Garnish.Base.extend(
 		// Same number of columns as before?
 		if (force !== true && this.totalCols === this.refreshCols._.totalCols)
 		{
-			this.completeRefreshCols();
+			delete this.refreshCols._;
 			return;
 		}
 
@@ -12249,34 +12245,18 @@ Craft.Grid = Garnish.Base.extend(
 			}
 		}
 
-		this.completeRefreshCols();
+		this.onRefreshCols();
+
+		delete this.refreshCols._;
 
 		// Resume container resize listening
 		this.addListener(this.$container, 'resize', this.handleContainerHeightProxy);
-
-		this.onRefreshCols();
-	},
-
-	completeRefreshCols: function()
-	{
-		// Delete the internal variable object
-		if (typeof this.refreshCols._ != typeof undefined)
-		{
-			delete this.refreshCols._;
-		}
-
 		this._refreshingCols = false;
-
 		if (this._refreshColsAfterRefresh) {
-			force = this._forceRefreshColsAfterRefresh;
 			this._refreshColsAfterRefresh = false;
-			this._forceRefreshColsAfterRefresh = false;
-
-			Garnish.requestAnimationFrame($.proxy(function() {
-				this.refreshCols(force);
-			}, this))
+			this.refreshCols();
 		}
-	},
+	} ,
 
 	getItemWidth: function(colspan)
 	{
