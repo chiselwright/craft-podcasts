@@ -66,7 +66,7 @@
             <itunes:duration>{{podcast.episodeDurationHHMMSS}}</itunes:duration>
             <itunes:explicit>clean</itunes:explicit>
             <itunes:keywords />
-            <itunes:subtitle><![CDATA[{{podcast.episodeDescription}}]]></itunes:subtitle>
+            <itunes:subtitle><![CDATA[{{podcast.episodeSummary}}]]></itunes:subtitle>
             <description><![CDATA[{{podcast.episodeDescription}}]]></description>
         </item>
         {% endfor %}
